@@ -1,5 +1,11 @@
 from ajaxlte.generics import Index, Datatables, AjaxSite
 from .models import *
+from django.shortcuts import render
+
+
+def website(request):
+    return render(request, 'testapp/index.html')
+
 
 
 # creating de index page
@@ -25,6 +31,7 @@ class Bars(Datatables):
 
 # add index site
 AjaxSite.name_space = "testapp"
+AjaxSite.root_url = "testapp"
 AjaxSite.set_index(TestIndex)
 
 
