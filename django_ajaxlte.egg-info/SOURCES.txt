@@ -257,6 +257,9 @@ ajaxlte/templates/ajaxlte/widgets/form-widget.html
 ajaxlte/templates/ajaxlte/widgets/select-search.html
 ajaxlte/templates/ajaxlte/widgets/table-bordered-input.html
 ajaxlte/templates/ajaxlte/widgets/table-bordered.html
+ajaxlte/templatetags/__init__.py
+ajaxlte/templatetags/datatables.py
+ajaxlte/templatetags/menu.py
 django_ajaxlte.egg-info/PKG-INFO
 django_ajaxlte.egg-info/SOURCES.txt
 django_ajaxlte.egg-info/dependency_links.txt

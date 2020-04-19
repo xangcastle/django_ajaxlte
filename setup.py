@@ -78,7 +78,7 @@ setup(
     author=author,
     author_email=author_email,
     license=license,
-    packages=['ajaxlte'],
+    packages=['ajaxlte', 'ajaxlte.templatetags'],
     include_package_data=True,
     description=description,
     long_description=read('README.md'),
