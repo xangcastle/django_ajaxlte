@@ -32,6 +32,29 @@ def get_code(entity, length=4):
     return str(code).zfill(length)
 
 
+def get_number(entity, length=4):
+    model = type(entity)
+    code = ''
+    sets = model.objects.filter(number__isnull=False)
+    if sets:
+        maxi = str(sets.aggregate(Max('number'))['number__max'])
+        if maxi:
+            consecutive = list(range(1, int(maxi)))
+            busy = list(sets.values_list('number', flat=True))
+            n = 0
+            for l in busy:
+                busy[n] = int(str(l))
+                n += 1
+            available = list(set(consecutive) - set(busy))
+            if len(available) > 0:
+                code = min(available)
+            else:
+                code = max(busy) + 1
+    else:
+        code = 1
+    return str(code).zfill(length)
+
+
 class Codec(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'isoformat'):

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: django-ajaxlte
-Version: 1.0.4
+Version: 1.0.5
 Summary: Genrerate adminlte cruds for models
 Home-page: https://github.com/xangcastle/django_ajaxlte/
 Author: Cesar Abel Ramirez

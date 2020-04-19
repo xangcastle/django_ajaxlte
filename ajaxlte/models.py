@@ -27,9 +27,9 @@ class BaseModel(Model):
 
     def __str__(self):
         if self.pk:
-            return self.__name__ + "()" % self.pk
+            return self._meta.verbose_name + "(%s)" % str(self.pk)
         else:
-            return self.__name__
+            return self._meta.verbose_name
 
     def to_json(self):
         o = model_to_dict(self)
