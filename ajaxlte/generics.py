@@ -35,7 +35,7 @@ class AjaxSite:
         if cls.root_url == "":
             return ""
         else:
-            return "/%s/" % cls.root_url
+            return "/%s" % cls.root_url
 
     @classmethod
     def add_pill(cls, module):

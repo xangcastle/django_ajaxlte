@@ -9,7 +9,6 @@ def website(request):
 
 # creating de index page
 class TestIndex(Index):
-    proyect_name = "proyect name"
     site = AjaxSite
 
 
