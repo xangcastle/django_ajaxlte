@@ -19,7 +19,7 @@ from django.urls import path
 
 class AjaxSite:
     logo_url = ""
-    company_name = ""
+    proyect_name = ""
     spinner = ""
     name_space = ""
     root_url = ""
@@ -55,7 +55,7 @@ class AjaxSite:
 
     @classmethod
     def branding(cls):
-        return {'logo': cls.logo_url, 'company': cls.company_name, 'spinner': cls.spinner}
+        return {'logo': cls.logo_url, 'company': cls.proyect_name, 'spinner': cls.spinner}
 
 
 class Index(View):

@@ -1,16 +1,17 @@
 from ajaxlte.generics import Index, Datatables, AjaxSite
-from .forms import *
+from .models import *
 
 
+# creating de index page
 class TestIndex(Index):
-    company_name = "tecnolite"
+    proyect_name = "proyect name"
     site = AjaxSite
 
 
-class Foos(Datatables):
+# creating the foo datatable
+class FooDatatable(Datatables):
     site = AjaxSite
     model = Foo
-    form = FooForm
     list_display = ('code', 'name')
     search_fields = ('code', 'name')
 
@@ -33,7 +34,7 @@ AjaxSite.add_pill('test2')
 
 
 # register classes
-AjaxSite.register(Foos, 'test1')
+AjaxSite.register(FooDatatable, 'test1')
 AjaxSite.register(Bars, 'test2')
 
 
