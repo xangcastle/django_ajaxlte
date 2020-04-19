@@ -55,6 +55,13 @@ def get_number(entity, length=4):
     return str(code).zfill(length)
 
 
+def json_object(instance, model):
+    if instance:
+        return instance.to_json()
+    else:
+        return model().to_json()
+
+
 class Codec(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'isoformat'):
