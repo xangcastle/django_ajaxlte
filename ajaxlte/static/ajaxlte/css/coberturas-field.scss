@@ -1,0 +1,33 @@
+#coberturas-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    height: 700px;
+  }
+
+  thead tr {
+    display: block;
+  }
+
+  thead {
+    width: 100%;
+  }
+
+  th, td {
+    padding: 5px;
+    text-align: left;
+  }
+  .cobertura-check{
+    width: 100px;
+  }
+  .cobertura-description{
+    width: 500px;
+  }
+  .cobertura-amount{
+    width: 200px;
+  }
+}

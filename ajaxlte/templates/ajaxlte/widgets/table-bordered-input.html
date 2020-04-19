@@ -1,0 +1,61 @@
+{% load datatables crispy_forms_filters %}
+
+
+<table class="table-template" id="{{ widget.name }}-template" style="display: none">
+    <tr>
+        {% for column in widget.attrs.columns %}
+            <td>
+                {% ifequal forloop.counter0 0 %}
+                    <input type="hidden" name="{{ widget.attrs.model }}" value="">
+                {% endifequal %}
+                {{ widget.attrs.form|datatables_field:column|as_inline_field }}
+            </td>
+        {% endfor %}
+        <td>
+            <button type="button" class="btn btn-danger btn-table-delete"
+                    data-model="{{ widget.attrs.model }}" data-id="">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
+    </tr>
+</table>
+
+
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+        {% for column in widget.attrs.columns %}
+            <th>{{ widget.attrs.form|datatables_label:column }}</th>
+        {% endfor %}
+        <th style="width: 40px; text-align: center">
+            <button type="button" class="btn btn-info btn-table-add"
+                    data-target="{{ widget.name }}-table" data-template="{{ widget.name }}-template">
+                <i class="fa fa-plus"></i>
+            </button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="{{ widget.name }}-table">
+    {% for row in widget.value %}
+        <tr>
+            {% for column in widget.attrs.columns %}
+                <td>
+                    {% ifequal forloop.counter0 0 %}
+                        <input type="hidden" name="{{ widget.attrs.model }}"
+                               value="{{ row.instance.id }}">
+                    {% endifequal %}
+                    {{ row|datatables_field:column|as_inline_field }}
+                </td>
+            {% endfor %}
+            <td>
+                <button type="button" class="btn btn-danger btn-table-delete"
+                        data-model="{{ widget.attrs.opts.model_name }}"
+                        data-app="{{ widget.attrs.opts.app_label }}"
+                        data-id="{{ row.instance.id }}">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

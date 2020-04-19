@@ -1,0 +1,104 @@
+.dataTables_wrapper tbody tr {
+  cursor: pointer;
+}
+.dataTables_wrapper .table-bordered td, .dataTables_wrapper .table-bordered th {
+  border: 1px solid #340e00;
+}
+.dataTables_wrapper .table-hover tbody tr:hover {
+  background-color: #fe4e0014;
+}
+.dataTables_wrapper .page-item .page-link {
+  color: #340e00 !important;
+  border-color: #340e00 !important;
+}
+.dataTables_wrapper .page-item .page-link:focus {
+  color: #340e00 !important;
+  background-color: #fe4e0044 !important;
+  border-color: #340e00 !important;
+  box-shadow: 0 0 0 0.2rem #fe4e0044;
+}
+.dataTables_wrapper .page-item .page-link:hover {
+  background-color: #fe4e0044 !important;
+}
+.dataTables_wrapper .page-item.active .page-link {
+  background-color: #fe4e0044;
+  border-color: #340e00;
+}
+
+.form-control {
+  color: #340e00 !important;
+  font-weight: 700;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem #fe4e0044 !important;
+  border-color: #340e00 !important;
+}
+
+option:checked {
+  background-color: #fe4e0044 !important;
+}
+
+option:not(:checked) {
+  background-color: #fe4e0014 !important;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-color: #fe4e00 #fe4e00 #ffffff !important;
+  background-color: #fe4e0014;
+  color: #340e00 !important;
+}
+
+.card-trust {
+  box-shadow: 0 0 1px #340e00, 0 1px 3px #340e00;
+  background-color: #fe4e0014;
+}
+
+@keyframes hideFilters {
+  from {
+    height: 300px;
+  }
+  to {
+    height: 0;
+    padding: 0;
+  }
+}
+@keyframes showFilters {
+  from {
+    height: 0;
+    padding: 0;
+  }
+  to {
+    height: 300px;
+    padding: 1%;
+  }
+}
+.dataTables_filter {
+  position: relative;
+}
+.dataTables_filter .datatables-filters-group {
+  width: 300px;
+  overflow: hidden;
+  position: fixed;
+  right: 17px;
+  background-color: whitesmoke;
+  z-index: 100;
+  padding: 0;
+  height: 0;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.filter-close {
+  animation: hideFilters 1s forwards;
+}
+
+.filter-open {
+  animation: showFilters 1s forwards;
+}
+
+.form-check {
+  padding-top: 45px !important;
+}
+
+/*# sourceMappingURL=datatables.lte.css.map */

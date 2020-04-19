@@ -1,0 +1,92 @@
+{% load crispy_forms_tags crispy_forms_filters datatables mathfilters %}
+
+{% block content %}
+    <div class="izimodal" id="{{ opts.model_name }}-modal">
+        {% if fieldsets %}
+            <div class="modal-body" style="padding: 0">
+
+                <ul class="nav nav-tabs">
+                    {% for fieldset in fieldsets %}
+                        <li class="nav-item">
+                            <a {% ifequal forloop.counter0 0 %}class="nav-link active"
+                               {% else %}class="nav-link"{% endifequal %}
+                               data-toggle="tab"
+                               href="#{{ opts.model_name }}-{{ fieldset.id }}">{{ fieldset.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="card card-trust">
+                    <div class="card-body">
+                        <form action="." method="{{ method }}" data-method="{{ method }}"
+                              id="{{ opts.model_name }}-form" data-toggle="validator">
+                            <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
+                            {% csrf_token %}
+                            <div class="tab-content">
+                                {% for fieldset in fieldsets %}
+                                    <div id="{{ opts.model_name }}-{{ fieldset.id }}"
+                                         class="tab-pane fade {% ifequal forloop.counter0 0 %}show active{% endifequal %}">
+                                        {% for line in fieldset.fields %}
+                                            <div class="row">
+                                                {% for field in line %}
+                                                    <div class="col">
+                                                        {{ form|datatables_field:field|as_crispy_field }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        {% else %}
+            <div class="modal-body" style="padding: 0">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a data-toggle="tab" href="#{{ opts.model_name }}-info" class="nav-link active">Información
+                            general</a>
+                    </li>
+                </ul>
+
+                <div class="card card-trust">
+                    <div class="card-body">
+                        <form action="." data-method="{{ method }}" method="{{ method }}"
+                              id="{{ opts.model_name }}-form">
+                            <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
+                            {% csrf_token %}
+                            <div class="tab-content">
+                                <div id="{{ opts.model_name }}-info"
+                                     class="tab-pane fade show active">
+                                    {{ form|crispy }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12 form-buttons">
+                    {% block buttons %}
+                        <button type="button" class="btn btn-success" id="btn-save">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra-content %}
+{% endblock %}
+
+

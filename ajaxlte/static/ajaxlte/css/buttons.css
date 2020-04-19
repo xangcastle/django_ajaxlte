@@ -1,0 +1,49 @@
+.btn-trust {
+  position: relative;
+  cursor: pointer;
+  margin: 5px;
+  padding: 5px 20px;
+  border-width: 0;
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  background-color: #fe4e00;
+  color: #ffffff;
+  transition: background-color 0.3s;
+}
+.btn-trust:hover, .btn-trust:focus {
+  background-color: #340e00;
+  color: #ffffff;
+}
+.btn-trust:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0;
+  padding-top: 0;
+  border-radius: 100%;
+  background-color: rgba(236, 240, 241, 0.3);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.btn-trust:active:before {
+  width: 120%;
+  padding-top: 120%;
+  transition: width 0.2s ease-out, padding-top 0.2s ease-out;
+}
+.btn-trust-sm {
+  font-size: 0.7em;
+}
+.btn-trust-md {
+  font-size: 1em;
+}
+.btn-trust-lg {
+  font-size: 1.3em;
+}
+
+/*# sourceMappingURL=buttons.css.map */

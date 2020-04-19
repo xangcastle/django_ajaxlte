@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ES-NI">
+<head>
+    {% load static %}
+
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/main.css' %}">
+    {% block style %}
+
+    {% endblock %}
+
+    <script src="{% static 'ajaxlte/plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+
+<div class="wrapper">
+
+    <nav class="main-header navbar navbar-expand navbar-light">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell" style="color: white"></i>
+                    <span class="badge badge-warning navbar-badge">0</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">0 Notificaciones</span>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-power-off mr-2"></i> Cerrar sesión
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-light-success elevation-4">
+        {% block brand-logo %}
+            <a href="/{{ menu.root_url }}" class="brand-link">
+                <figure style="max-width: 100%; text-align: center">
+                    <img src="{{ logo.url }}" alt="{{ logo.alt }}"
+                         style="width: 80%; margin: 0 auto">
+                </figure>
+            </a>
+        {% endblock %}
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">{{ user.username }}</a>
+                </div>
+            </div>
+            <input type="hidden" name="path" value="{{ request.path }}">
+            {% include 'ajaxlte/menu.html' %}
+        </div>
+    </aside>
+
+    <div class="content-wrapper">
+        {% block content-header %}
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">{% block content-title %}{% endblock %}</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            {% block breadcrums %}
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item active">Inicio</li>
+                                </ol>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        <section class="content">
+            <div class="container-fluid">
+
+                {% block content %}
+                    "{% url 'testapp:index' %}"
+                    "{% url 'testapp:Foo' %}"
+                    "{% url 'testapp:Bar' %}"
+                {% endblock %}
+
+            </div>
+        </section>
+
+        {% block loader %}
+            <div id="loader" style="width: 100%; left: 0;
+            top: 30%; text-align: center; position: fixed;
+            z-index: 999999; display: none">
+                <img src="{{ branding.spinner }}" style="width: 400px">
+            </div>
+        {% endblock %}
+    </div>
+
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2020 <a href="{{ branding.website }}">{{ branding.company }}</a>.</strong>
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Versión</b> 1.0.0
+        </div>
+    </footer>
+
+    <aside class="control-sidebar control-sidebar-dark"></aside>
+
+</div>
+
+
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+
+<script src="{% static 'ajaxlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'ajaxlte/js/adminlte.js' %}"></script>
+<script src="{% static 'ajaxlte/js/lte.main.js' %}"></script>
+
+{% block javascript %}
+
+{% endblock %}
+</body>
+</html>

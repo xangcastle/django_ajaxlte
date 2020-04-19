@@ -1,0 +1,113 @@
+@import "colors";
+
+.dataTables_wrapper {
+
+  tbody tr {
+    cursor: pointer;
+  }
+  .table-bordered td, .table-bordered th {
+    border: 1px solid $primary-dark;
+  }
+  .table-hover tbody tr:hover {
+    background-color: $primary-semi2;
+  }
+  .page-item {
+    .page-link {
+      color: $primary-dark !important;
+      border-color: $primary-dark !important;
+      &:focus {
+        color: $primary-dark !important;
+        background-color: $primary-semi !important;
+        border-color: $primary-dark !important;
+        box-shadow: 0 0 0 0.2rem $primary-semi;
+      }
+      &:hover {
+        background-color: $primary-semi !important;
+      }
+    }
+    &.active {
+      .page-link {
+        background-color: $primary-semi;
+        border-color: $primary-dark;
+      }
+    }
+  }
+}
+
+.form-control {
+  color: $primary-dark !important;
+  font-weight: 700;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem $primary-semi !important;
+  border-color: $primary-dark !important;
+}
+
+option:checked {
+  background-color: $primary-semi !important;
+}
+
+option:not(:checked) {
+  background-color: $primary-semi2 !important;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-color: $primary $primary $blanco !important;
+  background-color: $primary-semi2;
+  color: $primary-dark !important;
+}
+
+.card-trust {
+  box-shadow: 0 0 1px $primary-dark, 0 1px 3px $primary-dark;
+  background-color: $primary-semi2;
+}
+
+@keyframes hideFilters {
+  from {
+    height: 300px;
+  }
+  to {
+    height: 0;
+    padding: 0;
+  }
+}
+
+@keyframes showFilters {
+  from {
+    height: 0;
+    padding: 0;
+  }
+  to {
+    height: 300px;
+    padding: 1%;
+  }
+}
+
+.dataTables_filter {
+  position: relative;
+  .datatables-filters-group {
+    width: 300px;
+    overflow: hidden;
+    position: fixed;
+    right: 17px;
+    background-color: whitesmoke;
+    z-index: 100;
+    padding: 0;
+    height: 0;
+    border-radius: 5px;
+    text-align: left;
+  }
+}
+
+.filter-close {
+  animation: hideFilters 1s forwards;
+}
+
+.filter-open {
+  animation: showFilters 1s forwards;
+}
+
+.form-check {
+  padding-top: 45px !important;
+}

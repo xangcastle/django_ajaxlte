@@ -1,0 +1,47 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+
+        {% for key, pill in menu.menu.items %}
+
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p> {{ key|capfirst }} <i class="right fas fa-angle-left"></i> </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% for link in pill.links %}
+                        {% if link.has_treeview %}
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-dot-circle nav-icon"></i>
+                                    <p>{{ link.name|capfirst }} <i class="right fas fa-angle-left"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {% for branch in link.tree %}
+                                        <li class="nav-item">
+                                            <a href="{{ branch.url }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"
+                                                   style="font-size: .3em; vertical-align: middle"></i>
+                                                <p>{{ branch.name }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{ link.url }}" class="nav-link">
+                                    <i class="far fa-dot-circle nav-icon"></i>
+                                    <p>{{ link.name|capfirst }}</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </li>
+
+        {% endfor %}
+    </ul>
+</nav>

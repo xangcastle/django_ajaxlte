@@ -1,0 +1,26 @@
+{% load crispy_forms_field datatables %}
+
+{% if field.is_hidden %}
+    {{ field }}
+{% else %}
+    {% if field|is_checkboxselectmultiple %}
+        {% include 'bootstrap4/layout/checkboxselectmultiple.html' %}
+    {% endif %}
+
+    {% if field|is_radioselect %}
+        {% include 'bootstrap4/layout/radioselect.html' %}
+    {% endif %}
+
+    {% if field|is_date %}
+        <input type="date" value="{{ field.value }}">
+    {% endif %}
+
+    {% if not field|is_checkboxselectmultiple and not field|is_radioselect %}
+        {% if field|is_checkbox and form_show_labels %}
+            {% include 'bootstrap4/layout/help_text_and_errors.html' %}
+        {% else %}
+            {% crispy_field field %}
+            {% include 'bootstrap4/layout/help_text_and_errors.html' %}
+        {% endif %}
+    {% endif %}
+{% endif %}

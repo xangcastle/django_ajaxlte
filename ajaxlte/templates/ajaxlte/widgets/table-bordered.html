@@ -1,0 +1,19 @@
+{% load datatables %}
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+        {% for column in widget.attrs.columns %}
+            <th>{{ column.1 }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody id="{{ widget.name }}-table">
+        {% for row in widget.value %}
+            <tr>
+                {% for column in widget.attrs.columns %}
+                    <td>{{ row|datatables_field:column.0 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,2 @@
+recursive-include ajaxlte/static *
+recursive-include ajaxlte/templates *

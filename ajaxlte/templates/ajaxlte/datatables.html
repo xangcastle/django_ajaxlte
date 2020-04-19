@@ -1,0 +1,335 @@
+{% extends 'ajaxlte/index.html' %}
+{% load static datatables %}
+
+
+{% block style %}
+
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/inputmask/css/inputmask.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/izimodal/css/iziModal.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/bootstrap-select/dist/css/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/sweetalert2/dist/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/growl/stylesheets/jquery.growl.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/plugins/jquery-ui/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/datatables.lte.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/ui.theme.lte.css' %}">
+    <link rel="stylesheet" href="{% static 'ajaxlte/css/buttons.css' %}">
+    {% for link in media.css %}
+        <link rel="stylesheet" href="{% static link %}">
+    {% endfor %}
+{% endblock %}
+
+
+{% block content-title %}
+    {{ opts.verbose_name_plural|capfirst }}
+{% endblock %}
+
+
+{% block breadcrums %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="">Inicio</a></li>
+        <li class="breadcrumb-item active">{{ opts.verbose_name_plural|capfirst }}</li>
+    </ol>
+{% endblock %}
+
+
+{% block content %}
+
+    <table id="{{ opts.model_name }}-table" class="table table-bordered table-hover">
+
+    </table>
+
+    {% include form_template %}
+
+{% endblock %}
+
+
+{% block javascript %}
+
+    {% comment %}<script type="text/javascript">
+        const $ajax_getCollection = "{% url 'ajax_getCollection' %}";
+        const $ajax_autocomplete = "{% url 'ajax_autocomplete' %}";
+        const $ajax_execute = "{% url 'ajax_objectExecute' %}";
+    </script>{% endcomment %}
+
+    <script src="{% static 'ajaxlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/moment/moment.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/js/datatables.ES_NI.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/izimodal/js/iziModal.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/growl/javascripts/jquery.growl.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'ajaxlte/plugins/inputmask/dist/jquery.inputmask.bundle.js' %}"></script>
+    <script src="{% static 'ajaxlte/js/csfr.token.js' %}"></script>
+    <script type="text/javascript">
+
+        function li_errors(errors) {
+            let li = ``;
+            $.each(errors, function (i, error) {
+                li += `<li>${error.message}</li>`
+            });
+            return li;
+        }
+
+        const modal_width = parseInt('{{ modal_width }}');
+
+        const form_submit = function (e) {
+            e.preventDefault();
+            const data = new FormData(this);
+            const _this = $(this);
+            data.append('save', 'save');
+            $.ajax(_this.attr('action'), {
+                method: _this.data('method'),
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (response, textStatus, xhr) {
+                    redraw_object(response);
+                    if (xhr.status === 200) {
+                        update_table(response);
+                        $.growl.notice({
+                            title: `Notificación`,
+                            message: `<p>${response.instance.str} se guardó con éxito!</p>`
+                        });
+                    }
+                    $.each(response.errors, function (n, error) {
+                        $.growl.error({
+                            message: `<p>${error.key}</p>
+                                      <ul>${li_errors(error.errors)}</ul>`
+                        });
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                    $.growl.error({
+                        message: `<p>${error}</p>`
+                    });
+                }
+            })
+        };
+
+        const new_object = function (e, dt, node, config) {
+            $.ajax(".", {
+                method: 'PUT',
+                data: {open: 'open'},
+                success: function (response, resonse_status, xhr) {
+                    modal.iziModal('destroy');
+                    modal.empty().append(response.form);
+                    modal.iziModal({
+                        title: 'Agregar {{ opts.verbose_name }}',
+                        subtitle: 'Datos {{ opts.verbose_name }}',
+                        width: modal_width, padding: 20, fullscreen: false, zindex: 1500,
+                        headerColor: '#72181c'
+                    }).iziModal('open');
+                }
+            });
+        };
+
+        const buildFilters = function () {
+            if ($('#table-filters')) {
+                return $('#table-filters').val()
+            } else {
+                return ""
+            }
+        };
+
+        const table = $('#{{ opts.model_name }}-table').DataTable({
+            dom: 'Bfrtip',
+            language: ES_ni,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: ".",
+                type: 'POST',
+                data: {'list': 'list', 'filters': buildFilters}
+            },
+            columns: [
+                {% for field in list_display %}
+                    {{ form|datatables_column:field }}
+                {% endfor %}
+            ],
+            buttons: [
+                {
+                    text: '<i class="fas fa-plus"></i> Agregar {{ opts.verbose_name }}',
+                    action: new_object,
+                    className: 'btn btn-trust'
+                },
+            ]
+
+        });
+
+        const modal = $('#{{ opts.model_name }}-modal').iziModal({});
+
+        const open_object = function (id) {
+            $.ajax('.', {
+                method: "POST",
+                data: {id: id, 'open': 'open'},
+                success: function (response, respose_text, xhr) {
+                    modal.iziModal('destroy');
+                    modal.empty().append(response.form);
+                    modal.iziModal({
+                        title: response.instance.str,
+                        subtitle: 'Datos {{ opts.verbose_name }}',
+                        width: modal_width, padding: 20, fullscreen: false, zindex: 1500,
+                        headerColor: '#72181c'
+                    }).iziModal('open');
+                    $('input[name="id"]').val(id);
+                }
+            });
+        };
+
+        const show_object = function () {
+            const obj = table.row(this).data();
+            open_object(obj.id);
+        };
+
+        const redraw_object = function (response) {
+            const wrap = modal.find('#{{ opts.model_name }}-modal');
+            wrap.empty().append(response.form);
+        };
+
+        const update_table = function (response) {
+            if (response.instance) {
+                try {
+                    table.row("#" + response.instance.id).data(response.instance).draw(false);
+                } catch (error) {
+                    table.row.add(response.instance).draw(false);
+                }
+            }
+        };
+
+        const add_row = function () {
+            const _this = $(this);
+            const $template = $('#' + _this.data('template'));
+            const $target = $('#' + _this.data('target'));
+            const row = $($template.find('tr')[0]).clone();
+            $target.append(row);
+
+            $('.dateinput').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+            });
+        };
+
+        const delete_row = function () {
+            const _this = $(this);
+            $.ajax("{% url 'ajaxlte:objectExecute' %}", {
+                method: "POST",
+                data: {
+                    app_label: _this.data('app'),
+                    model: _this.data('model'),
+                    id: _this.data('id'),
+                    view: 'delete'
+                }
+            });
+            $(this).parents('tr').remove()
+        };
+
+        const filters = function () {
+            return (`<button type="button" id="btn-table-filter">
+                        <a href="#"><i class="fas fa-cog"></i></a>
+                    </button>
+                    <input type="hidden" id="table-filters" value="">
+                    <div class="datatables-filters-group elevation-4 filter-close">
+                    <h3>Filtros</h3>
+                    <div class="filters-container">
+                        {% for filter in list_filter %}
+                            {{ filter.render }}
+                        {% endfor %}
+                    </div>
+                </div>`);
+        };
+
+        $(document).ready(function () {
+            $(document)
+                .ajaxStart(function () {
+                    startLoader()
+                })
+                .ajaxStop(function () {
+                    stopLoader();
+                    $('.dateinput').datepicker({
+                        dateFormat: 'dd/mm/yy',
+                    });
+                    $('.selectpicker').selectpicker();
+                    $.each($('.inputmask'), function (n, el) {
+                        let mask = $(el).data('mask');
+                        $(el).inputmask(mask);
+                    });
+                });
+
+            $('#{{ opts.model_name }}-table').on('click', 'tbody tr', show_object);
+
+            $(document).on('submit', '#{{ opts.model_name }}-form', form_submit);
+
+            $(document).on('click', '#btn-save', function () {
+                $('#{{ opts.model_name }}-form').trigger('submit')
+            });
+
+            $(document).on('click', '.btn-table-add', add_row);
+
+            $(document).on('click', '.btn-table-delete', delete_row);
+
+            $(document).on('keydown', 'input', enter2tab);
+
+            $('#{{ opts.model_name }}-table_filter').append(filters());
+
+            const togleFilters = function (event) {
+                let filters = $('.datatables-filters-group');
+                if ($(event.target).attr('class') === 'fas fa-cog') {
+                    if (filters.hasClass('filter-close')) {
+                        filters.removeClass('filter-close').addClass('filter-open')
+                    }
+                } else {
+
+                    filters.removeClass('filter-open').addClass('filter-close')
+                }
+            };
+
+            $(document).on('click', '#btn-table-filter', togleFilters);
+            $(document).on('click', '#{{ opts.model_name }}-table_wrapper', togleFilters);
+
+            $(document).on('change', '.filter-table', function () {
+                let filters = [];
+                $.each($('.filter-table'), function (i, o) {
+                    if ($(o).val() === "") {
+                        console.log($(o).val() === "");
+                    } else {
+                        filters.push($(o).data('name') + $(o).data('option') + $(o).val())
+                    }
+                });
+                $('#table-filters').val(filters.join('&'));
+
+                table.ajax.reload();
+            });
+            $(document).on('keyup', 'input,textarea', function () {
+                const self = $(this);
+                let text = self.val().toUpperCase();
+                self.val(text);
+            });
+
+            $(document).on('click', '.form-buttons button', function () {
+                $(this).attr('disabled', 'disabled')
+            })
+
+        });
+
+        function get_hash() {
+            const hash = window.location.hash;
+            if (hash) {
+                open_object(hash.replace('#', ''))
+            }
+        }
+
+        get_hash();
+
+    </script>
+
+    {% for script in media.js %}
+        <script src="{% static script %}"></script>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,31 @@
+#coberturas-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+#coberturas-table tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 700px;
+}
+#coberturas-table thead tr {
+  display: block;
+}
+#coberturas-table thead {
+  width: 100%;
+}
+#coberturas-table th, #coberturas-table td {
+  padding: 5px;
+  text-align: left;
+}
+#coberturas-table .cobertura-check {
+  width: 100px;
+}
+#coberturas-table .cobertura-description {
+  width: 500px;
+}
+#coberturas-table .cobertura-amount {
+  width: 200px;
+}
+
+/*# sourceMappingURL=coberturas-field.css.map */
