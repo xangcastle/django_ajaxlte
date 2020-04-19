@@ -7,7 +7,6 @@ def website(request):
     return render(request, 'testapp/index.html')
 
 
-
 # creating de index page
 class TestIndex(Index):
     proyect_name = "proyect name"
@@ -31,7 +30,7 @@ class Bars(Datatables):
 
 # add index site
 AjaxSite.name_space = "testapp"
-AjaxSite.root_url = "testapp"
+AjaxSite.root_url = "testapp/"
 AjaxSite.set_index(TestIndex)
 
 

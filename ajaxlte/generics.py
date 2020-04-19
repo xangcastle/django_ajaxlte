@@ -35,7 +35,7 @@ class AjaxSite:
         if cls.root_url == "":
             return ""
         else:
-            return "/" + cls.root_url
+            return "/%s/" % cls.root_url
 
     @classmethod
     def add_pill(cls, module):
@@ -50,7 +50,7 @@ class AjaxSite:
         cls.urlpatterns.append(path(url, class_view.as_view(), name=class_view.model.__name__))
         cls.menu[module]['links'].append({
             'name': class_view.model._meta.verbose_name_plural,
-            'url': cls.get_root_url() + "/" + url
+            'url': cls.get_root_url() + url
         })
 
     @classmethod
