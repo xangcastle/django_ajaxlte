@@ -62,6 +62,13 @@ def json_object(instance, model):
         return model().to_json()
 
 
+def json_choice(choice_name, instance):
+    try:
+        return {'id': getattr(instance, choice_name), 'name': getattr(instance, 'get_%s_display' % choice_name)()}
+    except:
+        return None
+
+
 class Codec(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'isoformat'):
