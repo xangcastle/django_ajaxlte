@@ -23,6 +23,7 @@ class AjaxSite:
     spinner = ""
     name_space = ""
     root_url = ""
+    login_url = ""
     menu = {}
     urlpatterns = []
 
@@ -61,6 +62,10 @@ class AjaxSite:
 class Index(View):
     template_name = "ajaxlte/index.html"
     site = None
+
+    @classmethod
+    def as_view(cls, **initkwars):
+        return login_required(super().as_view(**initkwars), login_url=cls.site.login_url)
 
     def get(self, request):
         return render(request, self.template_name, {
@@ -149,7 +154,7 @@ class Datatables(View):
 
     @classmethod
     def as_view(cls, **initkwars):
-        return login_required(super().as_view(**initkwars), login_url=initkwars.get('login_url'))
+        return login_required(super().as_view(**initkwars), login_url=cls.site.login_url)
 
     def get_fields(self):
         field_names = []
