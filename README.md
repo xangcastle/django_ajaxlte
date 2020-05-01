@@ -28,7 +28,19 @@ Traslation Suport by Locales.
 ```python
 INSTALLED_APPS = [
     'ajaxlte',
-    ...
+    ...,
+    'django.contrib.humanize',
+    'mathfilters',
+    'crispy_forms',
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+MIDDLEWARE = [
+    ...,
+    'ajaxlte.middleware.JSONParsingMiddleware',
+    'ajaxlte.middleware.PutParsingMiddleware',
+    'ajaxlte.middleware.DeleteParsingMiddleware',
 ]
 ```
 
