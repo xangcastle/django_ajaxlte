@@ -81,11 +81,25 @@ In your views.py
 ```python
 from ajaxlte.generics import Index, Datatables, AjaxSite
 from .models import *
+from django.shortcuts import render
+
+
+# this is a public website, maybe your root url
+def website(request):
+    return render(request, 'testapp/index.html')
+
+
+# general settings
+AjaxSite.proyect_name = "Amazing proyect"
+AjaxSite.name_space = "testapp"
+AjaxSite.root_url = "testapp/"
+AjaxSite.login_url = "/admin/login/"
+AjaxSite.logo_url = "/static/testapp/img/logo.png"
+AjaxSite.spinner = "/static/testapp/img/spinner.gif" # the spinner is the gif loaded between ajax requests
 
 
 # creating de index page
 class TestIndex(Index):
-    proyect_name = "proyect name"
     site = AjaxSite
 
 
@@ -97,16 +111,24 @@ class FooDatatable(Datatables):
     search_fields = ('code', 'name')
 
 
+# creating the foo datatable
+class Bars(Datatables):
+    site = AjaxSite
+    model = Bar
+    list_display = ('code', 'name', 'foo')
+    search_fields = ('code', 'name')
+
+
 # add index site
-AjaxSite.name_space = "testapp"
 AjaxSite.set_index(TestIndex)
 
 
 # add menu
 AjaxSite.add_pill('test1')
+AjaxSite.add_pill('test2')
 
 
 # register classes
 AjaxSite.register(FooDatatable, 'test1')
-# 'test1' is the name of the menu than you want to put this module
+AjaxSite.register(Bars, 'test2')
 ```

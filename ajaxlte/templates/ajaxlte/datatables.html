@@ -41,7 +41,9 @@
 
     </table>
 
-    {% include form_template %}
+    {% block modal %}
+        {% include form_template %}
+    {% endblock %}
 
 {% endblock %}
 

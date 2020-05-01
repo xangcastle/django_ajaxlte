@@ -56,7 +56,7 @@ class AjaxSite:
 
     @classmethod
     def branding(cls):
-        return {'logo': cls.logo_url, 'company': cls.proyect_name, 'spinner': cls.spinner}
+        return {'logo': cls.logo_url, 'proyect_name': cls.proyect_name, 'spinner': cls.spinner}
 
 
 class Index(View):
@@ -75,6 +75,7 @@ class Index(View):
 
 
 class Filter:
+
     def __init__(self, field_name, model, option="=",
                  template_name="ajaxlte/filters/select-filter.html"):
         self.model = model
@@ -187,8 +188,8 @@ class Datatables(View):
             'opts': self.model._meta, 'list_display': self.list_display,
             'form': self.get_form(), 'form_template': self.form_template,
             'modal_width': self.modal_width, 'media': self.media,
-            'list_filter': self.get_list_filters(), 'menu': self.site
-
+            'list_filter': self.get_list_filters(), 'menu': self.site,
+            'branding': self.site.branding()
         })
 
     def save_related(self, instance, data):

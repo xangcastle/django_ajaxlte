@@ -3,8 +3,18 @@ from .models import *
 from django.shortcuts import render
 
 
+# this is a public website, maybe your root url
 def website(request):
     return render(request, 'testapp/index.html')
+
+
+# general settings
+AjaxSite.proyect_name = "Amazing proyect"
+AjaxSite.name_space = "testapp"
+AjaxSite.root_url = "testapp/"
+AjaxSite.login_url = "/admin/login/"
+AjaxSite.logo_url = "/static/testapp/img/logo.png"
+AjaxSite.spinner = "/static/testapp/img/spinner.gif"
 
 
 # creating de index page
@@ -28,8 +38,6 @@ class Bars(Datatables):
 
 
 # add index site
-AjaxSite.name_space = "testapp"
-AjaxSite.root_url = "testapp/"
 AjaxSite.set_index(TestIndex)
 
 

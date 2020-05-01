@@ -43,10 +43,11 @@
     </nav>
 
     <aside class="main-sidebar sidebar-light-success elevation-4">
+
         {% block brand-logo %}
             <a href="/{{ menu.root_url }}" class="brand-link">
                 <figure style="max-width: 100%; text-align: center">
-                    <img src="{{ logo.url }}" alt="{{ logo.alt }}"
+                    <img src="{{ branding.logo }}" alt="{{ branding.proyect_name }}"
                          style="width: 80%; margin: 0 auto">
                 </figure>
             </a>
@@ -105,7 +106,7 @@
     </div>
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 <a href="{{ branding.website }}">{{ branding.company }}</a>.</strong>
+        <strong>Copyright &copy; 2020 <a href="{{ branding.website }}">{{ branding.proyect_name }}</a>.</strong>
         <div class="float-right d-none d-sm-inline-block">
             <b>Versión</b> 1.0.0
         </div>
