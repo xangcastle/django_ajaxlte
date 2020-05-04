@@ -1,5 +1,15 @@
 # ajaxlte
 
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
+[![Latest PyPI version](https://img.shields.io/pypi/v/django-ajaxlte.svg)](https://crate.io/packages/django-ajaxlte/)
+
+[![Number of PyPI downloads](https://img.shields.io/pypi/l/django-ajaxlte.svg)](https://crate.io/packages/django-ajaxlte/)
+
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+
+[![PyPI download month](https://img.shields.io/pypi/dm/django-ajaxlte.svg)](https://pypi.python.org/pypi/django-ajaxlte/)
+
 Available features:
 
 * [class based views](#classview)
