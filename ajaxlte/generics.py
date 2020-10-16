@@ -75,9 +75,8 @@ class Index(View):
 
 
 class Filter:
-
     def __init__(self, field_name, model, option="=",
-                 template_name="ajaxlte/filters/select-filter.html"):
+                 template_name="adminlte/filters/select-filter.html"):
         self.model = model
         self.field_name = field_name
         self.option = option
@@ -146,26 +145,36 @@ class Datatables(View):
     site = None
     model = None
     form = None
+    buttons = [
+        {
+            'class': 'btn btn-success btn-perform',
+            'perform': 'save',
+            'callback': 'process_response',
+            'icon': 'fa fa-save',
+            'text': 'Guardar',
+        },
+    ]
     fieldsets = None
     fields = None
     media = None
     list_display = ()
     search_fields = ()
     list_filter = ()
+    ordering = None
 
     @classmethod
     def as_view(cls, **initkwars):
-        return login_required(super().as_view(**initkwars), login_url=cls.site.login_url)
+        return login_required(super().as_view(**initkwars), login_url="/cotizador/login/")
 
     def get_fields(self):
         field_names = []
-        if self.fields:
-            field_names = self.fields
-        elif self.fieldsets:
+        if self.fieldsets:
             for fieldset in self.fieldsets:
                 field_names.extend(flatten(fieldset['fields']))
-        else:
-            field_names = '__all__'
+        elif self.fields and not self.fieldsets:
+            return self.fields
+        elif not self.fieldsets and not self.fields:
+            return '__all__'
         return field_names
 
     def get_form(self):
@@ -174,22 +183,29 @@ class Datatables(View):
         else:
             return self.form
 
+    def get_buttons(self, request, instance=None):
+        return self.buttons
+
     def html_form(self, instance, request, form, method):
         return render_to_string(self.form_template,
                                 context={'opts': self.model._meta, 'fieldsets': self.fieldsets,
-                                         'form': form, 'instance': instance, 'method': method},
+                                         'form': form, 'instance': instance, 'method': method,
+                                         'buttons': self.get_buttons(request, instance=instance)},
                                 request=request)
 
     def get_list_filters(self):
         return [Filter(x, self.model) for x in self.list_filter]
 
-    def get(self, request):
+    def get_opts(self):
+        return self.model._meta
+
+    def get(self, request, **kwargs):
         return render(request, self.list_template, {
-            'opts': self.model._meta, 'list_display': self.list_display,
+            'opts': self.get_opts(), 'list_display': self.list_display,
             'form': self.get_form(), 'form_template': self.form_template,
             'modal_width': self.modal_width, 'media': self.media,
             'list_filter': self.get_list_filters(), 'menu': self.site,
-            'branding': self.site.branding()
+            'branding': self.site.branding(), **kwargs
         })
 
     def save_related(self, instance, data):
@@ -232,11 +248,48 @@ class Datatables(View):
             'recordsFiltered': queryset.count(),
         }
 
+    def get_instance(self, request):
+        try:
+            return self.model.objects.get(id=int(request.POST.get('id')))
+        except TypeError:
+            return None
+        except ValueError:
+            return None
+
+    @staticmethod
+    def get_form_errors(form):
+        return [{'key': f, 'errors': e.get_json_data()} for f, e in form.errors.items()]
+
+    def process_request(self, request, method, instance=None):
+        status = 200
+        errors = []
+        if instance:
+            form = self.get_form()(request.POST, instance=instance)
+        else:
+            form = self.get_form()(request.POST)
+        if form.is_valid():
+            form.save()
+            instance = form.instance
+            self.save_related(instance=instance, data=request.POST)
+            form = self.get_form()(instance=instance)
+            method = "POST"
+        else:
+            errors = self.get_form_errors(form)
+            status = 203
+        html_form = self.html_form(instance, request, form, method)
+        return instance, html_form, errors, status
+
+    @staticmethod
+    def make_response(instance, html_form, errors, status):
+        return JsonResponse({'instance': instance.to_json(),
+                             'form': html_form, 'errors': errors}, encoder=Codec,
+                            status=status)
+
     def post(self, request):
         status = 200
         errors = []
         instance = None
-
+        html_form = ""
         if 'list' in request.POST:
             order = None
             start = int(request.POST.get('start', 0))
@@ -251,7 +304,11 @@ class Datatables(View):
                 order = ''
                 if order_dir == 'desc':
                     order += '-'
-                order += self.list_display[int(order_column)].split('.')[0]
+                list_display_column = self.list_display[int(order_column)]
+                if type(list_display_column) == tuple:
+                    order += list_display_column[1].replace('.', '__')
+                else:
+                    order += list_display_column.split('.')[0]
 
             return JsonResponse(self.get_data(start, per_page, filters, search_value, draw, order), encoder=Codec)
         if 'open' in request.POST:
@@ -259,47 +316,20 @@ class Datatables(View):
             form = self.get_form()(instance=instance)
             html_form = self.html_form(instance, request, form, 'POST')
         if 'save' in request.POST:
-            instance = self.model.objects.get(id=int(request.POST.get('id')))
-            form = self.get_form()(request.POST, instance=instance)
-            if form.is_valid():
-                form.save()
-                instance = form.instance
-                self.save_related(instance=instance, data=request.POST)
-                form = self.get_form()(instance=instance)
-            else:
-                errors = [{'key': f, 'errors': e.get_json_data()} for f, e in form.errors.items()]
-                status = 203
-                print(errors)
-            html_form = self.html_form(instance, request, form, 'POST')
-
-        return JsonResponse({'instance': instance.to_json(),
-                             'form': html_form, 'errors': errors}, encoder=Codec,
-                            status=status)
+            instance = self.get_instance(request)
+            instance, html_form, errors, status = self.process_request(request, 'POST', instance)
+        return self.make_response(instance, html_form, errors, status)
 
     def put(self, request):
         status = 203
         instance = self.model()
-        form = self.get_form()()
+        try:
+            form = self.get_form()(request=request)
+        except TypeError:
+            form = self.get_form()
         html_form = self.html_form(instance, request, form, 'PUT')
         errors = []
 
         if 'save' in request.PUT:
-            try:
-                form = self.get_form()(request.PUT)
-                if form.is_valid():
-                    form.save()
-                    instance = form.instance
-                    status = 200
-                    self.save_related(instance=instance, data=request.PUT)
-                    form = self.get_form()(instance=instance)
-                    html_form = self.html_form(instance, request, form, "POST")
-                else:
-                    errors = [{'key': f, 'errors': e.get_json_data()} for f, e in form.errors.items()]
-                    print(errors)
-                    html_form = self.html_form(instance, request, form, "PUT")
-            except IntegrityError as e:
-                print(e)
-                # errors.append(dict(e))
-
-        return JsonResponse({'instance': instance.to_json(), 'form': html_form,
-                             'errors': errors}, status=status, encoder=Codec)
+            instance, html_form, errors, status = self.process_request(request, 'PUT')
+        return self.make_response(instance, html_form, errors, status)
