@@ -7,12 +7,12 @@
   outline: none;
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  background-color: #fe4e00;
+  background-color: #3c8dbc;
   color: #ffffff;
   transition: background-color 0.3s;
 }
 .btn-trust:hover, .btn-trust:focus {
-  background-color: #340e00;
+  background-color: #1b374e;
   color: #ffffff;
 }
 .btn-trust:before {

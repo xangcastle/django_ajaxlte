@@ -4,39 +4,39 @@ body {
 }
 
 a {
-  color: #fe4e00 !important;
+  color: #3c8dbc !important;
 }
 
 .brand-text, .text-dark {
-  color: #340e00 !important;
+  color: #1b374e !important;
   font-weight: 900 !important;
 }
 
 .navbar-light {
-  background-color: #fe4e00 !important;
+  background-color: #3c8dbc !important;
 }
 
 .sidebar-light-success .nav-sidebar > .nav-item > .nav-link.active,
 .sidebar-light-success .nav-sidebar > .nav-item > .nav-link.active {
-  background-color: #fe4e00 !important;
+  background-color: #3c8dbc !important;
   color: #ffffff !important;
 }
 .sidebar-light-success .nav-treeview > .nav-item > .nav-link.active,
 .sidebar-light-success .nav-treeview > .nav-item > .nav-link.active:hover,
 .sidebar-light-success .nav-pills .nav-link:not(.active):hover {
-  color: #fe4e00 !important;
-  background-color: #fe4e0044 !important;
+  color: #3c8dbc !important;
+  background-color: #3c8dbc44 !important;
 }
 
 .content-wrapper {
-  background-color: #fe4e0014;
+  background-color: #3c8dbc14;
 }
 .content-wrapper .dataTables_wrapper {
   background-color: #ffffff;
-  color: #340e00;
+  color: #1b374e;
 }
 .content-wrapper .dataTables_wrapper .odd {
-  background-color: #fe4e0044 !important;
+  background-color: #3c8dbc44 !important;
 }
 
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
@@ -44,12 +44,12 @@ a {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-  background-color: #340e00;
+  background-color: #1b374e;
   color: #ffffff !important;
 }
 
 .bootstrap-select button.dropdown-toggle:focus, .bootstrap-select > select.mobile-device:focus + button.dropdown-toggle {
-  outline: 5px auto #340e00 !important;
+  outline: 5px auto #1b374e !important;
 }
 
 .dropdown-menu {

@@ -1,12 +1,22 @@
 Metadata-Version: 2.1
 Name: django-ajaxlte
-Version: 1.1.2
+Version: 1.1.4
 Summary: Genrerate adminlte cruds for models
 Home-page: https://github.com/xangcastle/django_ajaxlte/
 Author: Cesar Abel Ramirez
 Author-email: xangcastle@gmail.com
 License: BSD
 Description: # ajaxlte
+        
+        [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+        
+        [![Latest PyPI version](https://img.shields.io/pypi/v/django-ajaxlte.svg)](https://crate.io/packages/django-ajaxlte/)
+        
+        [![Number of PyPI downloads](https://img.shields.io/pypi/l/django-ajaxlte.svg)](https://crate.io/packages/django-ajaxlte/)
+        
+        [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+        
+        [![PyPI download month](https://img.shields.io/pypi/dm/django-ajaxlte.svg)](https://pypi.python.org/pypi/django-ajaxlte/)
         
         Available features:
         
@@ -36,7 +46,19 @@ Description: # ajaxlte
         ```python
         INSTALLED_APPS = [
             'ajaxlte',
-            ...
+            ...,
+            'django.contrib.humanize',
+            'mathfilters',
+            'crispy_forms',
+        ]
+        
+        CRISPY_TEMPLATE_PACK = 'bootstrap4'
+        
+        MIDDLEWARE = [
+            ...,
+            'ajaxlte.middleware.JSONParsingMiddleware',
+            'ajaxlte.middleware.PutParsingMiddleware',
+            'ajaxlte.middleware.DeleteParsingMiddleware',
         ]
         ```
         
@@ -139,6 +161,23 @@ Description: # ajaxlte
         # register classes
         AjaxSite.register(FooDatatable, 'test1')
         AjaxSite.register(Bars, 'test2')
+        ```
+        
+        
+        In your main urls.py include ajaxlte and your AjaxSite.
+        
+        ```python
+        from django.contrib import admin
+        from django.urls import path, include
+        from testapp.views import AjaxSite, website
+        
+        urlpatterns = [
+            path('', website, name="website"),
+            path(AjaxSite.root_url, include((AjaxSite.urlpatterns, AjaxSite.name_space), namespace=AjaxSite.name_space)),
+            path('admin/', admin.site.urls),
+            path('ajax/', include('ajaxlte.ajax_urls')),
+        ]
+        
         ```
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable

@@ -2,56 +2,56 @@
   cursor: pointer;
 }
 .dataTables_wrapper .table-bordered td, .dataTables_wrapper .table-bordered th {
-  border: 1px solid #340e00;
+  border: 1px solid #1b374e;
 }
 .dataTables_wrapper .table-hover tbody tr:hover {
-  background-color: #fe4e0014;
+  background-color: #3c8dbc14;
 }
 .dataTables_wrapper .page-item .page-link {
-  color: #340e00 !important;
-  border-color: #340e00 !important;
+  color: #1b374e !important;
+  border-color: #1b374e !important;
 }
 .dataTables_wrapper .page-item .page-link:focus {
-  color: #340e00 !important;
-  background-color: #fe4e0044 !important;
-  border-color: #340e00 !important;
-  box-shadow: 0 0 0 0.2rem #fe4e0044;
+  color: #1b374e !important;
+  background-color: #3c8dbc44 !important;
+  border-color: #1b374e !important;
+  box-shadow: 0 0 0 0.2rem #3c8dbc44;
 }
 .dataTables_wrapper .page-item .page-link:hover {
-  background-color: #fe4e0044 !important;
+  background-color: #3c8dbc44 !important;
 }
 .dataTables_wrapper .page-item.active .page-link {
-  background-color: #fe4e0044;
-  border-color: #340e00;
+  background-color: #3c8dbc44;
+  border-color: #1b374e;
 }
 
 .form-control {
-  color: #340e00 !important;
+  color: #1b374e !important;
   font-weight: 700;
 }
 
 .form-control:focus {
-  box-shadow: 0 0 0 0.2rem #fe4e0044 !important;
-  border-color: #340e00 !important;
+  box-shadow: 0 0 0 0.2rem #3c8dbc44 !important;
+  border-color: #1b374e !important;
 }
 
 option:checked {
-  background-color: #fe4e0044 !important;
+  background-color: #3c8dbc44 !important;
 }
 
 option:not(:checked) {
-  background-color: #fe4e0014 !important;
+  background-color: #3c8dbc14 !important;
 }
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-  border-color: #fe4e00 #fe4e00 #ffffff !important;
-  background-color: #fe4e0014;
-  color: #340e00 !important;
+  border-color: #3c8dbc #3c8dbc #ffffff !important;
+  background-color: #3c8dbc14;
+  color: #1b374e !important;
 }
 
 .card-trust {
-  box-shadow: 0 0 1px #340e00, 0 1px 3px #340e00;
-  background-color: #fe4e0014;
+  box-shadow: 0 0 1px #1b374e, 0 1px 3px #1b374e;
+  background-color: #3c8dbc14;
 }
 
 @keyframes hideFilters {

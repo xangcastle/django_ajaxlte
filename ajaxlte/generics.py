@@ -164,7 +164,7 @@ class Datatables(View):
 
     @classmethod
     def as_view(cls, **initkwars):
-        return login_required(super().as_view(**initkwars), login_url="/cotizador/login/")
+        return login_required(super().as_view(**initkwars), login_url=cls.site.login_url)
 
     def get_fields(self):
         field_names = []
