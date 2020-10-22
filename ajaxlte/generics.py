@@ -209,7 +209,7 @@ class Datatables(View):
             'branding': self.site.branding(), **kwargs
         })
 
-    def save_related(self, instance, data, request):
+    def save_related(self, instance, request):
         pass
 
     @staticmethod
@@ -271,7 +271,7 @@ class Datatables(View):
         if form.is_valid():
             form.save()
             instance = form.instance
-            self.save_related(instance=instance, data=request.POST, request=request)
+            self.save_related(instance=instance, request=request)
             form = self.get_form()(instance=instance)
             method = "POST"
         else:
