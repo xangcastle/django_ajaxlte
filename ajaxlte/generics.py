@@ -161,6 +161,7 @@ class Datatables(View):
     search_fields = ()
     list_filter = ()
     ordering = None
+    include_request = False  # include request in the form init
 
     @classmethod
     def as_view(cls, **initkwars):
@@ -222,7 +223,7 @@ class Datatables(View):
             for field in self.search_fields
         ]
 
-    def get_queryset(self, filters, search_value):
+    def get_queryset(self, filters, search_value, request):
         queryset = self.model.objects.all()
         if not filters == "":
             queryset = queryset.filter(reduce(operator.and_, self.get_filters(filters)))
@@ -230,14 +231,14 @@ class Datatables(View):
             queryset = queryset.filter(reduce(operator.or_, self.search_value(search_value)))
         return queryset
 
-    def get_ordered_queryset(self, filters, search_value, order):
-        queryset = self.get_queryset(filters, search_value)
+    def get_ordered_queryset(self, filters, search_value, order, request):
+        queryset = self.get_queryset(filters, search_value, request)
         return queryset.order_by(order)
 
-    def get_data(self, start, per_page, filters, search_value, draw, order=None):
-        queryset = self.get_queryset(filters, search_value)
+    def get_data(self, start, per_page, filters, search_value, draw, order=None, request=None):
+        queryset = self.get_queryset(filters, search_value, request)
         if order:
-            queryset = self.get_ordered_queryset(filters, search_value, order)
+            queryset = self.get_ordered_queryset(filters, search_value, order, request)
         page = int(start / per_page) + 1
         paginator = Paginator(queryset, per_page)
         data = [x.to_json() for x in paginator.page(page).object_list]
@@ -310,10 +311,14 @@ class Datatables(View):
                 else:
                     order += list_display_column.split('.')[0]
 
-            return JsonResponse(self.get_data(start, per_page, filters, search_value, draw, order), encoder=Codec)
+            return JsonResponse(self.get_data(start, per_page, filters, search_value, draw, order, request),
+                                encoder=Codec)
         if 'open' in request.POST:
             instance = self.model.objects.get(id=int(request.POST.get('id')))
-            form = self.get_form()(instance=instance)
+            if self.include_request:
+                form = self.get_form()(instance=instance, request=request)
+            else:
+                form = self.get_form()(instance=instance)
             html_form = self.html_form(instance, request, form, 'POST')
         if 'save' in request.POST:
             instance = self.get_instance(request)

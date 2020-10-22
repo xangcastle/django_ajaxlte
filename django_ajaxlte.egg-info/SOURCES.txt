@@ -19,9 +19,6 @@ ajaxlte/static/ajaxlte/css/adminlte.min.css.map
 ajaxlte/static/ajaxlte/css/buttons.css
 ajaxlte/static/ajaxlte/css/buttons.css.map
 ajaxlte/static/ajaxlte/css/buttons.scss
-ajaxlte/static/ajaxlte/css/coberturas-field.css
-ajaxlte/static/ajaxlte/css/coberturas-field.css.map
-ajaxlte/static/ajaxlte/css/coberturas-field.scss
 ajaxlte/static/ajaxlte/css/colors.css
 ajaxlte/static/ajaxlte/css/colors.css.map
 ajaxlte/static/ajaxlte/css/colors.scss
@@ -31,9 +28,6 @@ ajaxlte/static/ajaxlte/css/datatables.lte.scss
 ajaxlte/static/ajaxlte/css/main.css
 ajaxlte/static/ajaxlte/css/main.css.map
 ajaxlte/static/ajaxlte/css/main.scss
-ajaxlte/static/ajaxlte/css/profile.css
-ajaxlte/static/ajaxlte/css/profile.css.map
-ajaxlte/static/ajaxlte/css/profile.scss
 ajaxlte/static/ajaxlte/css/ui.theme.lte.css
 ajaxlte/static/ajaxlte/css/ui.theme.lte.css.map
 ajaxlte/static/ajaxlte/css/ui.theme.lte.scss

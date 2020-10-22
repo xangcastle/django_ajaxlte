@@ -49,9 +49,9 @@ author = 'Cesar Abel Ramirez'
 author_email = 'xangcastle@gmail.com'
 license = 'BSD'
 install_requires = [
-    'Django>=3.0.5',
-    'django-crispy-forms>=1.9.0',
-    'django-mathfilters>=1.0.0'
+    'Django>=2.0.0',
+    'django-crispy-forms>=1.7.0',
+    'django-mathfilters>=0.4.0'
 ]
 
 version = get_version(mo)
