@@ -13,7 +13,6 @@ import operator
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 from django.db.models.query_utils import DeferredAttribute
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
 from django.urls import path
 
 
