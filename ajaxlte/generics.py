@@ -33,7 +33,7 @@ class AjaxSite:
     @classmethod
     def get_root_url(cls):
         if cls.root_url == "":
-            return ""
+            return "/"
         else:
             return "/%s" % cls.root_url
 
