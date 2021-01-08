@@ -208,9 +208,6 @@ class Datatables(View):
             'branding': self.site.branding(), **kwargs
         })
 
-    def save_related(self, instance, request):
-        pass
-
     @staticmethod
     def get_filters(filters):
         return [Q((field.split('=')[0], field.split('=')[1])) for field in filters.split('&')]
@@ -263,7 +260,9 @@ class Datatables(View):
     def process_request(self, request, method, instance):
         status = 200
         errors = []
+        old = None
         if instance:
+            old = instance
             form = self.get_form()(request.POST, instance=instance)
         else:
             form = self.get_form()(request.POST)
@@ -271,6 +270,7 @@ class Datatables(View):
             form.save()
             instance = form.instance
             self.save_related(instance=instance, request=request)
+            self.after_save(old=old, new=instance, request=request, method=method)
             form = self.get_form()(instance=instance)
             method = "POST"
         else:
@@ -285,8 +285,16 @@ class Datatables(View):
                              'form': html_form, 'errors': errors}, encoder=Codec,
                             status=status)
 
+    # fixme add warming deprecation in favor of before save.
     def save_model(self, instance, request, method):
         return self.process_request(request, method, instance)
+
+    # fixme add warming deprecation in favor of after save.
+    def save_related(self, instance, request):
+        pass
+
+    def after_save(self, old, new, request, method):
+        pass
 
     def post(self, request):
         status = 200

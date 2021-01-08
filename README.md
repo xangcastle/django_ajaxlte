@@ -57,7 +57,7 @@ MIDDLEWARE = [
 
 ## urls.py
 
- * Put grappelli extras urls in 'urlpatterns':
+ * Put ajax urls in 'urlpatterns':
 
 ```python
 from django.contrib import admin
