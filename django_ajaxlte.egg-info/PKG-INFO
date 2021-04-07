@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: django-ajaxlte
-Version: 1.2.3
+Version: 1.2.7
 Summary: Genrerate adminlte cruds for models
 Home-page: https://github.com/xangcastle/django_ajaxlte/
 Author: Cesar Abel Ramirez
@@ -65,7 +65,7 @@ Description: # ajaxlte
         
         ## urls.py
         
-         * Put grappelli extras urls in 'urlpatterns':
+         * Put ajax urls in 'urlpatterns':
         
         ```python
         from django.contrib import admin

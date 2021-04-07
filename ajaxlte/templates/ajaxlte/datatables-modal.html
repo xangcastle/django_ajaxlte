@@ -1,97 +1,87 @@
 {% load crispy_forms_tags crispy_forms_filters datatables mathfilters %}
 
 {% block content %}
-    <div class="izimodal" id="{{ opts.model_name }}-modal">
-        {% block fields %}
-            {% if fieldsets %}
-                <div class="modal-body" style="padding: 0">
 
-                    <ul class="nav nav-tabs">
-                        {% for fieldset in fieldsets %}
-                            <li class="nav-item">
-                                <a {% ifequal forloop.counter0 0 %}class="nav-link active"
-                                   {% else %}class="nav-link"{% endifequal %}
-                                   data-toggle="tab"
-                                   href="#{{ opts.model_name }}-{{ fieldset.id }}">{{ fieldset.name }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                    <div class="card card-trust">
-                        <div class="card-body">
-                            <form action="." method="{{ method }}" data-method="{{ method }}"
-                                  id="{{ opts.model_name }}-form" data-toggle="validator">
-                                <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
-                                {% csrf_token %}
-                                <div class="tab-content">
-                                    {% for fieldset in fieldsets %}
-                                        <div id="{{ opts.model_name }}-{{ fieldset.id }}"
-                                             class="tab-pane fade {% ifequal forloop.counter0 0 %}show active{% endifequal %}">
-                                            {% for line in fieldset.fields %}
-                                                <div class="row">
-                                                    {% for field in line %}
-                                                        <div class="col">
-                                                            {{ form|datatables_field:field|as_crispy_field }}
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-            {% else %}
-                <div class="modal-body" style="padding: 0">
-                    <ul class="nav nav-tabs">
+    {% block modal-body %}
+        {% if fieldsets %}
+            <div class="modal-body" style="padding: 0">
+                <ul class="nav nav-tabs">
+                    {% for fieldset in fieldsets %}
                         <li class="nav-item">
-                            <a data-toggle="tab" href="#{{ opts.model_name }}-info" class="nav-link active">Información
-                                general</a>
+                            <a {% ifequal forloop.counter0 0 %}class="nav-link active"
+                               {% else %}class="nav-link"{% endifequal %}
+                               data-toggle="tab"
+                               href="#{{ opts.model_name }}-{{ fieldset.id }}">{{ fieldset.name }}</a>
                         </li>
-                    </ul>
+                    {% endfor %}
+                </ul>
 
-                    <div class="card card-trust">
-                        <div class="card-body">
-                            <form action="." data-method="{{ method }}" method="{{ method }}"
-                                  id="{{ opts.model_name }}-form">
-                                <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
-                                {% csrf_token %}
-                                <div class="tab-content">
-                                    <div id="{{ opts.model_name }}-info"
-                                         class="tab-pane fade show active">
-                                        {{ form|crispy }}
+                <div class="card card-trust">
+                    <div class="card-body">
+                        <form action="." method="{{ method }}" data-method="{{ method }}"
+                              id="{{ opts.model_name }}-form" data-toggle="validator">
+                            <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
+                            {% csrf_token %}
+                            <div class="tab-content">
+                                {% for fieldset in fieldsets %}
+                                    <div id="{{ opts.model_name }}-{{ fieldset.id }}"
+                                         class="tab-pane fade {% ifequal forloop.counter0 0 %}show active{% endifequal %}">
+                                        {% for line in fieldset.fields %}
+                                            <div class="row">
+                                                {% for field in line %}
+                                                    <div class="col">
+                                                        {{ form|datatables_field:field|as_crispy_field }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                </div>
-                            </form>
-                        </div>
+                                {% endfor %}
+                            </div>
+                        </form>
                     </div>
 
                 </div>
-            {% endif %}
-        {% endblock %}
-        <div class="modal-footer">
-            <div class="row">
-                <div class="col-md-12 form-buttons">
-                    {% block buttons %}
-                        {% for button in buttons %}
-                            <button type="button" class="{{ button.class }}"
-                                    data-perform="{{ button.perform }}" data-callback="{{ button.callback }}">
-                                <i class="{{ button.icon }}"></i>
-                                {{ button.text }}
-                            </button>
-                        {% endfor %}
-                    {% endblock %}
+            </div>
+        {% else %}
+            <div class="modal-body" style="padding: 0">
+
+                <div class="card card-trust">
+                    <div class="card-body">
+                        <form action="." data-method="{{ method }}" method="{{ method }}"
+                              id="{{ opts.model_name }}-form">
+                            <input type="hidden" name="id" {% if instance.id %}value="{{ instance.id }}"{% endif %}>
+                            {% csrf_token %}
+                            <div class="tab-content">
+                                <div id="{{ opts.model_name }}-info"
+                                     class="tab-pane fade show active">
+                                    {{ form|crispy }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 form-buttons">
+                {% block buttons %}
+                    {% for button in buttons %}
+                        <button type="button" class="{{ button.class }}"
+                                data-perform="{{ button.perform }}" data-callback="{{ button.callback }}">
+                            <i class="{{ button.icon }}"></i>
+                            {{ button.text }}
+                        </button>
+                    {% endfor %}
+                {% endblock %}
             </div>
         </div>
     </div>
-{% endblock %}
 
-{% block extra-content %}
 {% endblock %}
 
 

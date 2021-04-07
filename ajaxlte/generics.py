@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from functools import reduce
 import operator
+from copy import copy
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 from django.db.models.query_utils import DeferredAttribute
 from django.contrib.auth.decorators import login_required
@@ -262,7 +263,7 @@ class Datatables(View):
         errors = []
         old = None
         if instance:
-            old = instance
+            old = copy(instance)
             form = self.get_form()(request.POST, instance=instance)
         else:
             form = self.get_form()(request.POST)

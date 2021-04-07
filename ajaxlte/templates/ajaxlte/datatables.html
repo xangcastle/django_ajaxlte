@@ -36,15 +36,10 @@
 
 
 {% block content %}
-
     <table id="{{ opts.model_name }}-table" class="table table-bordered table-hover">
 
     </table>
-
-    {% block modal %}
-        {% include form_template %}
-    {% endblock %}
-
+    <div class="izimodal" id="{{ opts.model_name }}-modal"></div>
 {% endblock %}
 
 
@@ -80,39 +75,46 @@
 
         const modal_width = parseInt('{{ modal_width }}');
 
-        const form_submit = function (e) {
-            e.preventDefault();
-            const data = new FormData(this);
-            const _this = $(this);
-            data.append('save', 'save');
-            $.ajax(_this.attr('action'), {
-                method: _this.data('method'),
+        function process_response(response, textStatus, xhr) {
+            redraw_object(response);
+            if (xhr.status === 200) {
+                update_table(response);
+                $.growl.notice({
+                    title: `Notificación`,
+                    message: `<p>${response.instance.str} se guardó con éxito!</p>`
+                });
+            }
+            $.each(response.errors, function (n, error) {
+                $.growl.error({
+                    message: `<p>${error.key}</p>
+                                      <ul>${li_errors(error.errors)}</ul>`
+                });
+            });
+        }
+
+        const perform_action = function (form, action, callback) {
+            const _form = $(form);
+            const data = new FormData(form);
+            data.append(action, action);
+            $.ajax(_form.attr('action'), {
+                method: _form.attr('method'),
                 data: data,
                 processData: false,
                 contentType: false,
                 success: function (response, textStatus, xhr) {
-                    redraw_object(response);
-                    if (xhr.status === 200) {
-                        update_table(response);
-                        $.growl.notice({
-                            title: `Notificación`,
-                            message: `<p>${response.instance.str} se guardó con éxito!</p>`
-                        });
-                    }
-                    $.each(response.errors, function (n, error) {
-                        $.growl.error({
-                            message: `<p>${error.key}</p>
-                                      <ul>${li_errors(error.errors)}</ul>`
-                        });
-                    });
+                    callback(response, textStatus, xhr)
                 },
                 error: function (error) {
-                    console.log(error);
                     $.growl.error({
                         message: `<p>${error}</p>`
                     });
                 }
             })
+        };
+
+        const form_submit = function (e) {
+            e.preventDefault();
+            perform_action(this, 'save', process_response);
         };
 
         const new_object = function (e, dt, node, config) {
@@ -150,11 +152,7 @@
                 type: 'POST',
                 data: {'list': 'list', 'filters': buildFilters}
             },
-            columns: [
-                {% for field in list_display %}
-                    {{ form|datatables_column:field }}
-                {% endfor %}
-            ],
+            columns: [{% for field in list_display %} {{ form|datatables_column:field }}{% endfor %}],
             buttons: [
                 {
                     text: '<i class="fas fa-plus"></i> Agregar {{ opts.verbose_name }}',
@@ -191,7 +189,7 @@
         };
 
         const redraw_object = function (response) {
-            const wrap = modal.find('#{{ opts.model_name }}-modal');
+            const wrap = modal.find('.iziModal-content');
             wrap.empty().append(response.form);
         };
 
@@ -232,6 +230,17 @@
             $(this).parents('tr').remove()
         };
 
+        const apply_pluggins = function () {
+            $('.dateinput').datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            $('.selectpicker').selectpicker();
+            $.each($('.inputmask'), function (n, el) {
+                let mask = $(el).data('mask');
+                $(el).inputmask(mask);
+            });
+        };
+
         const filters = function () {
             return (`<button type="button" id="btn-table-filter">
                         <a href="#"><i class="fas fa-cog"></i></a>
@@ -248,28 +257,19 @@
         };
 
         $(document).ready(function () {
-            $(document)
-                .ajaxStart(function () {
-                    startLoader()
-                })
-                .ajaxStop(function () {
-                    stopLoader();
-                    $('.dateinput').datepicker({
-                        dateFormat: 'dd/mm/yy',
-                    });
-                    $('.selectpicker').selectpicker();
-                    $.each($('.inputmask'), function (n, el) {
-                        let mask = $(el).data('mask');
-                        $(el).inputmask(mask);
-                    });
-                });
+            $(document).ajaxStop(function () {
+                apply_pluggins();
+            });
 
             $('#{{ opts.model_name }}-table').on('click', 'tbody tr', show_object);
 
             $(document).on('submit', '#{{ opts.model_name }}-form', form_submit);
 
-            $(document).on('click', '#btn-save', function () {
-                $('#{{ opts.model_name }}-form').trigger('submit')
+            $(document).on('click', '.btn-perform', function () {
+                const form = $('#{{ opts.model_name }}-form')[0];
+                const _this = $(this);
+                _this.attr('disabled', 'disabled');
+                perform_action(form, _this.data('perform'), window[_this.data('callback')])
             });
 
             $(document).on('click', '.btn-table-add', add_row);
@@ -305,7 +305,6 @@
                     }
                 });
                 $('#table-filters').val(filters.join('&'));
-
                 table.ajax.reload();
             });
             $(document).on('keyup', 'input,textarea', function () {
