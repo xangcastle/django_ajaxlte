@@ -6,7 +6,7 @@ from django.forms.models import model_to_dict
 class BaseModel(Model):
 
     def __iter__(self):
-        for field_name in self._meta.fields():
+        for field_name in self._meta.fields:
             try:
                 value = getattr(self, field_name)
             except:
