@@ -54,8 +54,6 @@ class _Menu:
         return render_to_string('adminlte/menu.html', context=context)
 
     def admin_apps(self, context, r):
-        print('context', context)
-        print('r', r)
         request = context['request']
         for app in context['available_apps']:
             if str(app['app_url']) in request.path:
@@ -98,8 +96,6 @@ class _Menu:
         return r
 
     def app_menu(self, context, r):
-        print('context', context)
-        print('r', r)
         return r
 
     def set_model_icon(self, model_name, icon):

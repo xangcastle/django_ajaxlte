@@ -187,9 +187,12 @@ class Datatables(View):
     def get_buttons(self, request, instance=None):
         return self.buttons
 
+    def get_fieldsets(self, instance, request):
+        return self.fieldsets
+
     def html_form(self, instance, request, form, method):
         return render_to_string(self.form_template,
-                                context={'opts': self.model._meta, 'fieldsets': self.fieldsets,
+                                context={'opts': self.model._meta, 'fieldsets': self.get_fieldsets(instance, request),
                                          'form': form, 'instance': instance, 'method': method,
                                          'buttons': self.get_buttons(request, instance=instance)},
                                 request=request)
