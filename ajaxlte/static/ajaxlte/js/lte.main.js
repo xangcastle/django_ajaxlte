@@ -38,4 +38,10 @@ $(document).ready(function(){
     const menu = $('a[href="' + $('input[name="path"]').val() + '"]');
     menu.addClass('active');
     menu.parents('.has-treeview').addClass('active').addClass('menu-open');
+    $(document).ajaxStart(function (){
+        startLoader()
+    });
+    $(document).ajaxStop(function (){
+        stopLoader()
+    })
 })
