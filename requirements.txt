@@ -1,9 +1,9 @@
 asgiref==3.2.7
-bleach==3.1.4
 certifi==2022.12.7
+bleach==3.3.0
 cffi==1.14.0
 chardet==3.0.4
-cryptography==3.2
+cryptography==3.3.2
 Django==3.0.7
 django-crispy-forms==1.9.0
 django-mathfilters==1.0.0
@@ -14,7 +14,7 @@ jeepney==0.4.3
 keyring==21.2.0
 pkginfo==1.5.0.1
 pycparser==2.20
-Pygments==2.6.1
+Pygments==2.7.4
 pytz==2019.3
 readme-renderer==25.0
 requests==2.23.0
@@ -24,6 +24,6 @@ six==1.14.0
 sqlparse==0.3.1
 tqdm==4.45.0
 twine==3.1.1
-urllib3==1.25.9
+urllib3==1.26.5
 webencodings==0.5.1
 zipp==3.1.0
