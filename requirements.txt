@@ -4,7 +4,7 @@ bleach==3.3.0
 cffi==1.14.0
 chardet==3.0.4
 cryptography==3.3.2
-Django==3.0.7
+Django==4.2.17
 django-crispy-forms==1.9.0
 django-mathfilters==1.0.0
 docutils==0.16
